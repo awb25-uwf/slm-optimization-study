@@ -1,0 +1,25 @@
+# === ChromaDB Database Data ===
+# Prevents committing your persistent vector indexes/embeddings database to GitHub
+chroma-data/
+.chroma/
+
+# === Python / FastAPI ===
+# Prevents committing local compiled Python cache binaries
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# === Environment & Secrets ===
+# Crucial if you ever add API keys or environment overrides locally
+.env
+*.local
+
+# === OS Specific ===
+# Cleans up hidden Windows/Mac folder configuration files
+.DS_Store
+Thumbs.db

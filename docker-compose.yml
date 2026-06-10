@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 1. Local Jupyter Server for Colab to hook into
+  colab-runtime:
+    image: jupyter/base-notebook:latest
+    ports:
+      - "8888:8888"
+    environment:
+      - CHROMA_DB_HOST=chromadb
+      - CHROMA_DB_PORT=8000
+      - OLLAMA_BASE_URL=http://<JETSON_IP_ADDRESS>:11434
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    user: root
+    # Crucial: These flags tell Jupyter to allow Google Colab to bypass CORS security
+    command: >
+      start-notebook.sh 
+      --NotebookApp.allow_origin='https://colab.research.google.com' 
+      --NotebookApp.port_retries=0 
+      --NotebookApp.token='colab-secret-token'
+      --NotebookApp.disable_check_xsrf=True
+    networks:
+      - slm-optimization-study-net
+
+  # 2. Vector Database
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma-data:/chroma/.chroma/index
+    networks:
+      - slm-optimization-study-net
+
+  # 3. Performance Monitor
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - slm-optimization-study-net
+
+volumes:
+  chroma-data:
+
+networks:
+  slm-optimization-study-net:
+    driver: bridge
