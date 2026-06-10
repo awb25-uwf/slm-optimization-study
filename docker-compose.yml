@@ -10,8 +10,9 @@ services:
       - CHROMA_DB_HOST=chromadb
       - CHROMA_DB_PORT=8000
       - OLLAMA_BASE_URL=http://<JETSON_IP_ADDRESS>:11434
+      - CHOWN_HOME=yes
     volumes:
-      - ./notebooks:/home/jovyan/work
+      - ./notebooks:/home/jovyan
     user: root
     # Crucial: These flags tell Jupyter to allow Google Colab to bypass CORS security
     command: >
