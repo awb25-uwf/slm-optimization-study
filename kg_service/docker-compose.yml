@@ -1,0 +1,27 @@
+services:
+  neo4j:
+    image: neo4j:5-community
+    container_name: nerc_cip_neo4j
+    ports:
+      - "7474:7474"  # browser UI -- http://localhost:7474
+      - "7687:7687"  # bolt protocol -- used by load_graph.py and kg_api.py
+    environment:
+      - NEO4J_AUTH=neo4j/nerc_cip_kg_pass  # must match NEO4J_PASSWORD in load_graph.py/kg_api.py
+    volumes:
+      - neo4j_data:/data
+    restart: unless-stopped
+
+  kg-api:
+    build: .
+    container_name: nerc_cip_kg
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./citation_lookup.jsonl:/app/citation_lookup.jsonl:ro
+      - ./prom_textfile:/app/prom_textfile
+    depends_on:
+      - neo4j
+    restart: unless-stopped
+
+volumes:
+  neo4j_data:

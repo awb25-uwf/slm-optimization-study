@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: nerc_cip_chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chroma_data:/chroma/chroma
+    restart: unless-stopped
+
+  rag-api:
+    build: .
+    container_name: nerc_cip_rag
+    ports:
+      - "8001:8001"
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    volumes:
+      - ./citation_lookup.jsonl:/app/citation_lookup.jsonl:ro
+      - ./prom_textfile:/app/prom_textfile
+    depends_on:
+      - chromadb
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped

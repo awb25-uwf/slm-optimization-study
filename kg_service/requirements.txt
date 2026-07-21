@@ -1,0 +1,13 @@
+# Core API
+fastapi==0.139.2
+uvicorn[standard]==0.49.0
+
+# Graph database client
+neo4j==6.2.0
+
+# Metrics / monitoring
+prometheus-client==0.25.0
+psutil==7.2.2
+
+# Validation (fastapi dependency, pinned explicitly)
+pydantic==2.13.4

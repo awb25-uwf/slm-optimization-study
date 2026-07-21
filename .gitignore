@@ -1,25 +1,30 @@
-# === ChromaDB Database Data ===
-# Prevents committing your persistent vector indexes/embeddings database to GitHub
-chroma-data/
-.chroma/
-
-# === Python / FastAPI ===
-# Prevents committing local compiled Python cache binaries
+# Python
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
-.pytest_cache/
 .venv/
 venv/
 env/
+*.egg-info/
 
-# === Environment & Secrets ===
-# Crucial if you ever add API keys or environment overrides locally
-.env
-*.local
+# Data / generated artifacts (regenerate via each module's README)
+*.jsonl
+*.json
+!package.json
+extracted_txt/
+chroma_data/
+neo4j_data/
+prom_textfile/
+*.log
+*.prom
 
-# === OS Specific ===
-# Cleans up hidden Windows/Mac folder configuration files
+# Model weights / checkpoints (large binaries, keep out of git)
+*.gguf
+*.safetensors
+*_merged/
+checkpoints/
+
+# OS/editor
 .DS_Store
-Thumbs.db
+.vscode/
+.idea/
