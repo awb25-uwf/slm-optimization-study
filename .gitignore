@@ -28,3 +28,6 @@ checkpoints/
 .DS_Store
 .vscode/
 .idea/
+
+# WSL Zone identifier
+*:Zone.Identifier
